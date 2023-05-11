@@ -3,7 +3,7 @@ pragma solidity 0.8.17;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 
-abstract contract ImplementationV1 is UUPSUpgradeable {
+contract ImplementationV1 is UUPSUpgradeable {
 
     address _owner;
 
@@ -12,12 +12,16 @@ abstract contract ImplementationV1 is UUPSUpgradeable {
         _owner = msg.sender;
     }
 
-    modifier onlyOwner {
+    function onlyOwner() internal {
+        
         require(msg.sender == _owner, "Invalid owner");
-        _;
+        
     }
 
-    function authorizeUpgrade() internal onlyOwner {}
+    function _authorizeUpgrade(address newImplementation) internal override{
+        (newImplementation);
+        onlyOwner();
+    }
 
     function getOwner() external view returns (address) {
         return _owner;
