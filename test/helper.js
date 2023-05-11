@@ -4,7 +4,9 @@ const { abi: ImplementationABI }  =require("../build/contracts/ImplementationV1.
 const getInitializeABI=()=>{
 
     const contract =  new web3.eth.Contract(ImplementationABI)
-    console.log(contract)
+    const initialize = contract.methods.initialize().encodeABI()
+    return initialize
+
 
 }
 

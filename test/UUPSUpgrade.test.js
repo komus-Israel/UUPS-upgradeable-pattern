@@ -2,7 +2,7 @@ require("chai").use(require("chai-as-promised")).should()
 
 const { getInitializeABI } = require("./helper")
 
-const PROXY = artifacts.require("SimpleProxy")
+const PROXY = artifacts.require("MyContractProxy")
 const ImplementationV1 = artifacts.require("ImplementationV1")
 
 
@@ -15,17 +15,26 @@ contract ("UUPS upgrade", ()=>{
      * Set this ABI in the constructor of the Proxy and deploy the proxy
      */
 
-    //let implementationV1 = ImplementationV1.new()
+    let implementationV1
+
+    let proxy;
 
     
-    // beforeEach(()=>{
+    beforeEach(async()=>{
+        const initializeImplementation = getInitializeABI()
 
-    // })
+        implementationV1 = ImplementationV1.new()   //  deploy implementation
+        proxy = await proxy.new(implementationV1.address, initializeImplementation)                   //  deploy proxy
+    })
 
 
     describe("Upgrade", ()=>{
 
-        it("should set ")
+        it("should set implementaion address in the proxy contract", ()=>{
+
+            getInitializeABI()
+
+        })
 
     })
 

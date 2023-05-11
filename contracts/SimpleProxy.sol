@@ -38,4 +38,9 @@ contract MyContractProxy is UUPSUpgradeable {
         (bool success, bytes memory returnData) = newImplementation.delegatecall(data);
         require(success, string(returnData));
     }
+
+
+    function getImplementation() external view returns (address Implementation) {
+        return _getImplementation();
+    }
 }
