@@ -23,16 +23,17 @@ contract ("UUPS upgrade", ()=>{
     beforeEach(async()=>{
         const initializeImplementation = getInitializeABI()
 
-        implementationV1 = ImplementationV1.new()   //  deploy implementation
-        proxy = await proxy.new(implementationV1.address, initializeImplementation)                   //  deploy proxy
+        implementationV1 = await ImplementationV1.new()   //  deploy implementation
+        proxy = await PROXY.new(implementationV1.address, initializeImplementation)                   //  deploy proxy
     })
 
 
     describe("Upgrade", ()=>{
 
-        it("should set implementaion address in the proxy contract", ()=>{
+        it("should set implementaion address in the proxy contract", async()=>{
 
-            getInitializeABI()
+            const getImplementation = await proxy.getImplementation()
+            getImplementation.should.be.equal(implementationV1.address)
 
         })
 
