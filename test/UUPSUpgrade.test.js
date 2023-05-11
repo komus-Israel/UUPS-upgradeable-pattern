@@ -46,6 +46,13 @@ contract ("UUPS upgrade", ([owner, ])=>{
     
             })
 
+            it("should return the address of the implementation contract owner", async()=>{
+                const imp = await ImplementationV1.at(proxy.address)
+                const _owner = await imp.getOwner()
+
+                _owner.should.be.equal(owner, "It returns the address of the contract owner")
+            })
+
         })
 
         describe("Version 2", ()=>{
@@ -62,6 +69,16 @@ contract ("UUPS upgrade", ([owner, ])=>{
                 const getImplementation = await proxy.getImplementation()
                 getImplementation.should.be.equal(implementationV2.address)
     
+            })
+
+            it("should retain state of the contract owner after upgrade", async()=>{
+
+                const imp2 =  await ImplementationV2.at(proxy.address)
+
+                const _owner =  await imp2.getOwner()
+
+                _owner.should.be.equal(owner, "It retains the state of the owner")
+
             })
 
         })
