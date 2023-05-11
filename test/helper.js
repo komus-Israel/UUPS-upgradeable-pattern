@@ -10,4 +10,14 @@ const getInitializeABI=()=>{
 
 }
 
-module.exports = { getInitializeABI }
+
+const getOwner=()=>{
+
+    const contract =  new web3.eth.Contract(ImplementationABI)
+    const owner = contract.methods.getOwner().encodeABI()
+    return owner
+
+
+}
+
+module.exports = { getInitializeABI, getOwner }
