@@ -14,7 +14,7 @@ contract ImplementationV2 is UUPSUpgradeable {
         _owner = msg.sender;
     }
 
-    function onlyOwner() internal {
+    function onlyOwner() internal view {
         
         require(msg.sender == _owner, "Invalid owner");
         

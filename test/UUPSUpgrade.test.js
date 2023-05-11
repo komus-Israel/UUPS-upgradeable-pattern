@@ -57,10 +57,15 @@ contract ("UUPS upgrade", ([owner, ])=>{
 
         describe("Version 2", ()=>{
 
+            let imp2
+
             beforeEach(async()=>{
                 implementationV2 = await ImplementationV2.new() //  deploy v2 implementation
 
                 await proxy.upgradeTo(implementationV2.address) //  upgrade proxy's implementation to reference the new implementation
+            
+            
+                imp2 =  await ImplementationV2.at(proxy.address)
             })
 
 
@@ -73,7 +78,7 @@ contract ("UUPS upgrade", ([owner, ])=>{
 
             it("should retain state of the contract owner after upgrade", async()=>{
 
-                const imp2 =  await ImplementationV2.at(proxy.address)
+                
 
                 const _owner =  await imp2.getOwner()
 
@@ -81,46 +86,25 @@ contract ("UUPS upgrade", ([owner, ])=>{
 
             })
 
+
+            it("should execute the functions in the upgraded contract", async()=>{
+        
+                _value = 90
+                await imp2.setValue(_value)
+
+
+                const returnedValue = await imp2.getValue()
+
+               Number(returnedValue).should.be.equal(_value, "It returned the value that was set")
+
+                
+            })
+
         })
 
        
 
-        // it("should return the owner of the contract", async()=>{
-    
-
-        //     const imp = await ImplementationV1.at(proxy.address)
-        //     const _owner = await imp.getOwner()
-
-        //     console.log(_owner)
-        //     console.log(owner)
-
-        //     console.log("Proxy before upgrade", proxy.address)
-
-
-        //     const imp2 =  await ImplementationV2.at(proxy.address)
-        //     console.log("Proxy after upgrade", proxy.address)
-
-        //     const _owner2 =  await imp2.getOwner()
-
-        //     console.log(_owner2)
-
-        //     await imp2.setValue(90)
-
-
-        //     const value = await imp2.getValue()
-
-        //     console.log(value.toString())
-
-
-
-        //     const value2 = await proxy.getValue()
-
-        //     console.log(value2.toString())
-
-
-
-            
-        // })
+       
 
     })
 
